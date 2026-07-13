@@ -13,6 +13,7 @@ function Home() {
     async function loadPopularMovies(params) {
       try {
         const popularMovies = await getPopularMovies();
+        console.log(popularMovies); // check the shape here
         setMovies(popularMovies);
       } catch (err) {
         console.log(err);
