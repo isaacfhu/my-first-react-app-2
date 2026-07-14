@@ -29,7 +29,6 @@ function Home() {
   const handleSearch = (e) => {
     e.preventDefault();
     alert(searchQuery);
-    setSearchQuery("---");
   };
 
   return (
@@ -53,17 +52,21 @@ function Home() {
         </button>
       </form>
 
-      <div className="movies-grid">
-        {movies.map(
-          (movie) =>
-            movie.title.toLowerCase().startsWith(searchQuery) && (
-              <MovieCard
-                movie={movie}
-                key={movie.id}
-              />
-            ),
-        )}
-      </div>
+      {loading ? (
+        <div className="loading">Loading...</div>
+      ) : (
+        <div className="movies-grid">
+          {movies.map(
+            (movie) =>
+              movie.title.toLowerCase().startsWith(searchQuery) && (
+                <MovieCard
+                  movie={movie}
+                  key={movie.id}
+                />
+              ),
+          )}
+        </div>
+      )}
     </div>
   );
 } // when dynamically rendering multiple objs, add key property
