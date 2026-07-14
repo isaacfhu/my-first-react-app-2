@@ -10,7 +10,7 @@ function Home() {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
   useEffect(() => {
-    async function loadPopularMovies(params) {
+    async function loadPopularMovies() {
       try {
         const popularMovies = await getPopularMovies();
         console.log(popularMovies); // check the shape here
@@ -26,9 +26,24 @@ function Home() {
     loadPopularMovies();
   }, []); // run when array changes, not state change
 
-  const handleSearch = (e) => {
-    e.preventDefault();
-    alert(searchQuery);
+  const handleSearch = async (e) => {
+    e.preventDefault(); // trim() removes spaces not in between words
+    if (!searchQuery.trim()) return;
+    if (loading) return;
+
+    setLoading(true);
+    try {
+      const searchResults = await searchMovies(searchQuery);
+      setMovies(searchResults);
+      setError(null);
+    } catch (err) {
+      console.log(err);
+      setError("Failed to search movies...");
+    } finally {
+      setLoading(false);
+    }
+
+    setSearchQuery("");
   };
 
   return (
@@ -51,6 +66,8 @@ function Home() {
           Search
         </button>
       </form>
+
+      {error && <div className="error-message">{error}</div>}
 
       {loading ? (
         <div className="loading">Loading...</div>
