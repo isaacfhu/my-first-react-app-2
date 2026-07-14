@@ -3,7 +3,7 @@ import { createContext, useState, useContext, useEffect } from "react";
 const MovieContext = createContext();
 
 export function useMovieContext() {
-  useContext();
+  return useContext(MovieContext);
 }
 
 export function MovieProvider({ children }) {
@@ -14,7 +14,7 @@ export function MovieProvider({ children }) {
     const storedFavs = localStorage.getItem("favorites");
 
     if (storedFavs) setFavorites(JSON.parse(storedFavs));
-  });
+  }, []);
 
   useEffect(() => {
     localStorage.setItem("favorites", JSON.stringify(favorites));
